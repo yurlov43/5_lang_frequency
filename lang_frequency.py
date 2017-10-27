@@ -15,15 +15,15 @@ def load_text(filepath, text_encoding):
         return text_file.read()
 
 
-def edit_text(text, unwanted_words):
-    text = full_text.lower()
+def edit_text(full_text, unwanted_words):
+    full_text = full_text.lower()
     for item in unwanted_words:
-        text = text.replace(item, "")
-    return text
+        full_text = full_text.replace(item, "")
+    return full_text
 
 
-def get_most_frequent_words(text, number_top_words):
-    list_correct_words = text.split()
+def get_most_frequent_words(correct_text, number_top_words):
+    list_correct_words = correct_text.split()
     counted_words = Counter(list_correct_words)
     return counted_words.most_common(number_top_words)
 
