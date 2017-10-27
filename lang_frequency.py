@@ -30,11 +30,11 @@ def get_most_frequent_words(correct_text, number_top_words):
 
 def print_list_words(list_words):
     print("Самые частые слова в тексте:")
-    item = 1
+    serial_number = 1
     for word, number in list_words:
         print('{} {}. \"{}\" повторяется {} раз(а)'.format(
-            "\t", item, word, number))
-        item += 1
+            "\t", serial_number, word, number))
+        serial_number += 1
 
 
 if __name__ == '__main__':
