@@ -1,6 +1,15 @@
 # Frequency Analysis of Words
 
-[TODO. There will be project description]
+The program defines the 10 most frequent words in the text.
+
+# Quickstart
+
+Example of script launch on Linux, Python 3.5:
+
+```bash
+$ python lang_frequency.py <path to file>
+```
+
 
 # Project Goals
 
