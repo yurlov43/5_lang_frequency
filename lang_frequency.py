@@ -15,26 +15,25 @@ def load_text(filepath, text_encoding):
         return text_file.read()
 
 
-def edit_text(full_text, unwanted_words):
-    full_text = full_text.lower()
-    for item in unwanted_words:
-        full_text = full_text.replace(item, "")
-    return full_text
+def remove_symbols(text, symbols):
+    text = text.lower()
+    for symbol in symbols:
+        text = text.replace(symbol, "")
+    return text
 
 
-def get_most_frequent_words(correct_text, number_top_words):
-    list_correct_words = correct_text.split()
-    counted_words = Counter(list_correct_words)
-    return counted_words.most_common(number_top_words)
+def get_most_frequent_words(text, number_words):
+    list_all_words = text.split()
+    counted_words = Counter(list_all_words)
+    return counted_words.most_common(number_words)
 
 
 def print_list_words(list_words):
+    numbered_list_words = enumerate(list_words, start=1)
     print("Самые частые слова в тексте:")
-    serial_number = 1
-    for word, number in list_words:
+    for number, word in numbered_list_words:
         print('{} {}. \"{}\" повторяется {} раз(а)'.format(
-            "\t", serial_number, word, number))
-        serial_number += 1
+            "\t", number, word[0], word[1]))
 
 
 if __name__ == '__main__':
@@ -45,10 +44,11 @@ if __name__ == '__main__':
         sys.exit("Ошибка: файл не найден!")
     text_encoding = get_text_encoding(arg.filepath)
     full_text = load_text(arg.filepath, text_encoding)
-    unwanted_words = [
+    unwanted_symbols = [
         "—", "-", ".", ",", "!", "?", ":", ";",
         "{", "}", "[", "]", "(", ")", "\""]
-    correct_text = edit_text(full_text, unwanted_words)
-    number_top_words = 10
-    list_top_words = get_most_frequent_words(correct_text, number_top_words)
-    print_list_words(list_top_words)
+    full_text = remove_symbols(full_text, unwanted_symbols)
+    number_frequent_words = 10
+    list_frequent_words = get_most_frequent_words(
+        full_text, number_frequent_words)
+    print_list_words(list_frequent_words)
