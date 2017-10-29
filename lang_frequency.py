@@ -5,49 +5,52 @@ import chardet
 from collections import Counter
 
 
+def parser_arguments():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "filepath",
+        help="The path to the text file")
+    return parser.parse_args()
+
+
 def get_text_encoding(filepath):
     with open(filepath, "rb") as text_file:
         return chardet.detect(text_file.read())["encoding"]
 
 
 def load_text(filepath, text_encoding):
-    with open(arg.filepath, "r", encoding=text_encoding) as text_file:
+    with open(filepath, "r", encoding=text_encoding) as text_file:
         return text_file.read()
 
 
-def remove_symbols(text, symbols):
-    text = text.lower()
-    for symbol in symbols:
-        text = text.replace(symbol, "")
+def remove_unwanted_symbols(text):
+    for symbol in text.lower():
+        if not symbol.isalpha():
+            if symbol == "-" or symbol == "`":
+                continue
+            text = text.replace(symbol, " ")
     return text
 
 
 def get_most_frequent_words(text, number_words):
-    list_all_words = text.split()
-    counted_words = Counter(list_all_words)
+    counted_words = Counter(text.split())
     return counted_words.most_common(number_words)
 
 
 def print_list_words(list_words):
-    numbered_list_words = enumerate(list_words, start=1)
     print("Самые частые слова в тексте:")
-    for number, word in numbered_list_words:
+    for number, (word, frequency) in enumerate(list_words, start=1):
         print('{} {}. \"{}\" повторяется {} раз(а)'.format(
-            "\t", number, word[0], word[1]))
+            "\t", number,  word, frequency))
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument("filepath")
-    arg = parser.parse_args()
-    if not os.path.exists(arg.filepath):
+    arguments = parser_arguments()
+    if not os.path.exists(arguments.filepath):
         sys.exit("Ошибка: файл не найден!")
-    text_encoding = get_text_encoding(arg.filepath)
-    full_text = load_text(arg.filepath, text_encoding)
-    unwanted_symbols = [
-        "—", "-", ".", ",", "!", "?", ":", ";",
-        "{", "}", "[", "]", "(", ")", "\""]
-    full_text = remove_symbols(full_text, unwanted_symbols)
+    text_encoding = get_text_encoding(arguments.filepath)
+    full_text = load_text(arguments.filepath, text_encoding)
+    full_text = remove_unwanted_symbols(full_text)
     number_frequent_words = 10
     list_frequent_words = get_most_frequent_words(
         full_text, number_frequent_words)
