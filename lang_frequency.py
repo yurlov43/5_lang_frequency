@@ -3,6 +3,7 @@ import os.path
 import sys
 import chardet
 from collections import Counter
+import re
 
 
 def parser_arguments():
@@ -24,12 +25,7 @@ def load_text(filepath, text_encoding):
 
 
 def remove_unwanted_symbols(text):
-    for symbol in text.lower():
-        if not symbol.isalpha():
-            if symbol == "-" or symbol == "`":
-                continue
-            text = text.replace(symbol, " ")
-    return text
+    return re.sub(r"[^a-zA-Zа-яА-Я]", " ", text.lower())
 
 
 def get_most_frequent_words(text, number_words):
