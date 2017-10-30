@@ -25,7 +25,7 @@ def load_text(filepath, text_encoding):
 
 
 def remove_unwanted_symbols(text):
-    return re.sub(r"[^a-zA-Zа-яА-Я]", " ", text.lower())
+    return re.sub(r"[^a-zа-я]", " ", text.lower())
 
 
 def get_most_frequent_words(text, number_words):
